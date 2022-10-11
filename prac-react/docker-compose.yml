@@ -1,0 +1,20 @@
+version: "3"
+services:
+  react:
+    build:
+      context: . #도커이미지를 구성하기 위한 파일과 폴더의 위치
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /usr/src/app/node_modules # : 이 없기때문에 맵핑 X
+      - ./:/usr/src/app #로컬 ./을 workdir을 컨테이너의 /usr/src/app에 참조하겠다.
+    stdin_open: true
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /usr/src/app/node_modules
+      - ./:/usr/src/app
+    command: ["yarn","test"]
